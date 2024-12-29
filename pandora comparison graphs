@@ -1,0 +1,38 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data from an Excel file
+# Replace 'your_file.xlsx' with the path to your Excel file
+file_path = r'C:\Users\DELL\Documents\research_doctoral\pandora\pandora and in-situ_HQ.xlsx'
+sheet_name = "hourly"
+df = pd.read_excel(file_path)
+
+# Preview the data structure
+print(df.head())
+
+# Create a dual-y axis plot
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Plot the first variable on the primary y-axis
+ax1.plot(df['timestamp'], df['so2-conc'], color='blue', label='SO$_2$ concentration', linewidth=2)
+ax1.set_xlabel('Date', fontsize=12)
+ax1.set_ylabel('SO$_2$ concentration  [ug/m3]', color='blue', fontsize=12)
+ax1.tick_params(axis='y', labelcolor='blue')
+
+# Create a secondary y-axis
+ax2 = ax1.twinx()
+ax2.plot(df['timestamp'], df['so2-tvcd'], color='red', label='SO$_2$ total VCDs', linewidth=2, linestyle='--')
+ax2.set_ylabel('SO$_2$ total VCDs', color='red', fontsize=12)
+ax2.tick_params(axis='y', labelcolor='red')
+
+# Add gridlines and a title
+ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
+plt.title("in-situ measurement and Pandora", fontsize=14)
+
+# Optionally add legends
+ax1.legend(loc='upper left', fontsize=10)
+ax2.legend(loc='upper right', fontsize=10)
+
+# Show the plot
+plt.tight_layout()
+plt.show()
