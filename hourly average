@@ -1,0 +1,19 @@
+import pandas as pd
+
+# Load the Excel file
+file_path = "C:/Users/DELL/Documents/research_doctoral/data/updated_graph_local/pandora_ub/no2_unv.xlsx"  
+sheet_name = "12"
+df = pd.read_excel(file_path, sheet_name=sheet_name, engine="openpyxl")
+
+# Ensure the datetime column is in datetime format
+# Replace 'timestamp' with the actual name of your datetime column
+df['datetime'] = pd.to_datetime(df['datetime'])
+
+# Set the datetime column as the index (optional, but useful)
+df.set_index('datetime', inplace=True)
+
+# Resample data to hourly and calculate mean
+hourly_avg = df.resample('h').mean()
+
+# Save the results back to a new Excel file
+hourly_avg.to_excel("C:/Users/DELL/Documents/research_doctoral/data/updated_graph_local/pandora_ub/hourly_average.xlsx")
