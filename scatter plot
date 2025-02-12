@@ -4,33 +4,33 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import linregress
 
-# Load data from Excel
-file_path = r'C:\Users\DELL\Documents\research_doctoral\pandora\pandora,in-situ_HQ_hourly-7-24.xlsx'
-df = pd.read_excel(file_path)
+# Load data from an Excel file
+file_path = "C:/Users/DELL/Documents/research_doctoral/data/updated_graph_local/no2_2024.05.01-2025.01.23.xlsx"  
+sheet_name = "high+medium"
+df = pd.read_excel(file_path, sheet_name=sheet_name, engine="openpyxl", parse_dates=["datetime"])
 
-# Ensure the data has columns like 'time', 'variable1', 'variable2'
+df = df.dropna(subset=['station', 'VCD'])  # Drop rows with NaN values in relevant columns
 
 # Scatter plot with trendline and statistics
 plt.figure(figsize=(10, 6))
 
 # Scatter plot
-sns.scatterplot(x=df['so2-conc'], y=df['so2-tvcd'], color='blue', s=50)
+sns.scatterplot(x=df['station'], y=df['VCD'], color='blue', s=50)
 
 # Compute regression line and statistics
-slope, intercept, r_value, p_value, std_err = linregress(df['so2-conc'], df['so2-tvcd'])
+slope, intercept, r_value, p_value, std_err = linregress(df['station'], df['VCD'])
 
 # Add trendline
-trendline = slope * df['so2-conc'] + intercept
-plt.plot(df['so2-conc'], trendline, color='red', linestyle='--', label=f"Trendline (R² = {r_value**2:.2f})")
+trendline = slope * df['station'] + intercept
+plt.plot(df['station'], trendline, color='red', linestyle='--', label=f"Trendline (R² = {r_value**2:.2f})")
 
 # Annotate statistical information
 stats_text = f"R = {r_value:.2f}\nP-value = {p_value:.2e}\nStd Err = {std_err:.2f}"
 plt.annotate(stats_text, xy=(0.05, 0.85), xycoords='axes fraction', fontsize=12, bbox=dict(boxstyle="round,pad=0.3", edgecolor='black', facecolor='white'))
 
 # Labels and title
-plt.xlabel('SO$_2$ total VCDs [moles per square meter]')
-plt.ylabel('SO$_2$ total VCDs [moles per square meter]')
-plt.title('pandora data and in-situ measurement of SO2')
+plt.xlabel('Total VCDs (moles·m⁻²)')
+plt.ylabel('Surface concentration  (ug·m⁻³)')
 
 # Add legend
 plt.legend()
