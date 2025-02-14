@@ -1,32 +1,33 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load data from an Excel file
-# Replace 'your_file.xlsx' with the path to your Excel file
-file_path = r'C:\Users\DELL\Documents\research_doctoral\pandora\pandora,in-situ_HQ_daily-7-24.xlsx'
-df = pd.read_excel(file_path)
+file_path = "C:/Users/DELL/Documents/research_doctoral/data/updated_graph_local/no2_2024.05.01-2025.01.23.xlsx"  
+sheet_name = "high+medium"
+df = pd.read_excel(file_path, sheet_name=sheet_name, engine="openpyxl", parse_dates=["datetime"])
 
 # Preview the data structure
 print(df.head())
+
+sns.set_style("ticks") # Apply the Minimalist style with small ticks style
 
 # Create a dual-y axis plot
 fig, ax1 = plt.subplots(figsize=(10, 6))
 
 # Plot the first variable on the primary y-axis
-ax1.plot(df['timestamp'], df['no2-conc'], color='blue', marker='x',label='NO$_2$ concentration', linewidth=0.5, linestyle='--')
-ax1.set_xlabel('Date', fontsize=12)
-ax1.set_ylabel('NO$_2$ concentration  [micrograms per cubic meter]', color='blue', fontsize=12)
+ax1.plot(df['datetime'], df['station'], color='blue',label='in-situ surface concentration', linewidth=0.3, linestyle='--')
+ax1.set_ylabel('NO$_2$ surface concentration  (ug·m$^{-3}$)', color='blue', fontsize=12)
 ax1.tick_params(axis='y', labelcolor='blue')
 
 # Create a secondary y-axis
 ax2 = ax1.twinx()
-ax2.plot(df['timestamp'], df['no2-tvcd'], color='red', marker='+',label='NO$_2$ total vertical column density', linewidth=0.5, linestyle='--')
-ax2.set_ylabel('NO$_2$ total VCDs [moles per square meter]', color='red', fontsize=12)
+ax2.plot(df['datetime'], df['VCD'], color='red',label='Total VCDs', linewidth=0.3, linestyle='--')
+ax2.set_ylabel('NO$_2$ total VCDs (moles·m$^{-2}$)', color='red', fontsize=12)
 ax2.tick_params(axis='y', labelcolor='red')
 
 # Add gridlines and a title
 ax1.grid(True, which='minor', linestyle='dashed', linewidth=0.5)
-plt.title("in-situ measurement and Pandora", fontsize=14)
 
 # Optionally add legends
 ax1.legend(loc='upper left', fontsize=10)
