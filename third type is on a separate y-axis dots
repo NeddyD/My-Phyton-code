@@ -1,0 +1,41 @@
+#a dual-y axis plot where two types of data share the same y-axis, and the third type is on a separate y-axis. with dots
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data from an Excel file
+file_path = "C:/Users/DELL/Documents/research_doctoral/data/updated_graph_local/no2_2024.05.01-2025.01.23.xlsx"  
+sheet_name = "high+medium"
+df = pd.read_excel(file_path, sheet_name=sheet_name, engine="openpyxl", parse_dates=["datetime"])
+
+df = df.dropna(subset=['station', 'VCD', 'surface'])  # Drop rows with NaN values in relevant columns
+
+# Define column names (update based on your file)
+x_col = "datetime"  # Change to your x-axis column
+y1_col = "station"  # Change to first y-axis column
+y2_col = "surface"  # Change to second y-axis column (same unit as y1)
+y3_col = "VCD"  # Change to third y-axis column (separate y-axis)
+
+# Create figure with custom size (width=10, height=6 inches)
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+ax1.plot(df[x_col], df[y1_col], 'bd', markersize=1.5, label=y1_col)
+ax1.plot(df[x_col], df[y2_col], 'go', markersize=1.5, label=y2_col)
+ax1.set_xlabel(x_col)
+ax1.set_ylabel("NO$_2$ surface concentration  (ug·m$^{-3}$)", color='b')
+ax1.tick_params(axis='y', labelcolor='b')
+ax1.set_ylim(0, 100)
+
+# Create secondary y-axis
+ax2 = ax1.twinx()
+ax2.plot(df[x_col], df[y3_col], 'k^', markersize=1.5, label=y3_col)
+ax2.set_ylabel("NO$_2$ total VCDs (moles·m$^{-2}$)", color='r')
+ax2.tick_params(axis='y', labelcolor='r')
+ax2.set_ylim(0, 0.0006)
+             
+# Add legends
+ax1.legend(loc='upper left')
+ax2.legend(loc='upper right')
+
+# Show plot
+fig.tight_layout()
+plt.show()
