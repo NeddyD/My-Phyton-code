@@ -1,0 +1,62 @@
+#1 time series for mongolian paper
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data from an Excel file
+file_path = "C:/Users/DELL/Documents/research_doctoral/hboengineering/2023-2024_no2.xlsx"  
+sheet_name = "sheet1"
+df = pd.read_excel(file_path, sheet_name=sheet_name, engine="openpyxl", parse_dates=["datetime"])
+
+# resize the image
+fig, ax1 = plt.subplots(figsize=(10, 4))
+
+ax1.plot(df['datetime'], df['station'], color='black', linewidth=0.2, linestyle='--')
+ax1.set_ylabel('АЧСХ-ын NO$_2$ концентраци  (ug·m$^{-3}$)', color='black', fontsize=10)
+ax1.tick_params(axis='y', labelcolor='black')
+
+
+# Add gridlines and a title
+ax1.xaxis.grid(True, linestyle='--', color='lightgray', alpha=0.7)
+
+# Optionally add legends
+ax1.legend(loc='upper right', fontsize=10)
+
+# save and show the plot
+plt.tight_layout()
+plt.savefig('C:/Users/DELL/Documents/research_doctoral/hboengineering/pics/23-24_insitu.png', dpi=300, bbox_inches='tight')
+plt.show()
+
+#change start date for just plot
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data from an Excel file
+file_path = "C:/Users/DELL/Documents/research_doctoral/hboengineering/2023-2024_no2.xlsx"  
+sheet_name = "sheet1"
+df = pd.read_excel(file_path, sheet_name=sheet_name, engine="openpyxl", parse_dates=["datetime"])
+
+# Create a dual-y axis plot
+fig, ax1 = plt.subplots(figsize=(10, 4))
+
+# Plot the first variable on the primary y-axis
+ax1.plot(df['datetime'], df['VCD'], color='purple', linewidth=0.2, linestyle='--')
+ax1.set_ylabel('Pandora  NO$_2$ VCD  (moles·m$^{-2}$)', color='black', fontsize=10)
+ax1.tick_params(axis='y', labelcolor='black')
+
+# Set the new start date (just for display, not changing the Excel file)
+new_start_date = pd.Timestamp('2024-05-01')
+ax1.set_xlim(left=new_start_date)
+
+# Add gridlines and a title
+ax1.xaxis.grid(True, linestyle='--', color='lightgray', alpha=0.7)
+
+# Optionally add legends
+ax1.legend(loc='upper right', fontsize=10)
+
+# Show the plot
+plt.tight_layout()
+plt.savefig('C:/Users/DELL/Documents/research_doctoral/hboengineering/pics/23-24_vcd.png', dpi=300, bbox_inches='tight')
+plt.show()
+
