@@ -46,8 +46,8 @@ ax1.set_ylabel('Pandora  NO$_2$ VCD  (moles·m$^{-2}$)', color='black', fontsize
 ax1.tick_params(axis='y', labelcolor='black')
 
 # Set the new start date (just for display, not changing the Excel file)
-new_start_date = pd.Timestamp('2024-05-01')
-ax1.set_xlim(left=new_start_date)
+ax.set_xlim(pd.Timestamp('2025-01-01'), pd.Timestamp('2025-12-31'))
+
 
 # Add gridlines and a title
 ax1.xaxis.grid(True, linestyle='--', color='lightgray', alpha=0.7)
