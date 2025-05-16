@@ -5,52 +5,45 @@ import seaborn as sns
 from scipy.stats import linregress
 
 # Load data from an Excel file
-file_path = "C:/Users/DELL/Documents/research_doctoral/data/updated_graph_local/no2_2024.05.01-2025.01.23.xlsx"  
-sheet_name = "high+medium"
+file_path = "C:/Users/DELL/Documents/research_doctoral/hboengineering/by_point.xlsx"  
+sheet_name = "vcd"
 df = pd.read_excel(file_path, sheet_name=sheet_name, engine="openpyxl", parse_dates=["datetime"])
 
-df = df.dropna(subset=['station', 'VCD'])  # Drop rows with NaN values in relevant columns
+
+df = df.dropna(subset=['no2', 'so2'])  # Drop rows with NaN values in relevant columns
 
 # Scatter plot with trendline and statistics
 plt.figure(figsize=(10, 6))
 
 # Scatter plot
-ax = sns.scatterplot(x=df['station'], y=df['VCD'], color='blue', s=50)
+ax = sns.scatterplot(x=df['no2'], y=df['so2'], color='blue', s=50)
 
 # Force axes to start at 0
 ax.set_xlim(left=0)  
 ax.set_ylim(bottom=0)
 
 # Compute regression line and statistics
-slope, intercept, r_value, p_value, std_err = linregress(df['station'], df['VCD'])
+slope, intercept, r_value, p_value, std_err = linregress(df['no2'], df['so2'])
 
 # Add trendline
-trendline = slope * df['station'] + intercept
-plt.plot(df['station'], trendline, color='red', linestyle='--', label=f"Trendline (R² = {r_value**2:.2f})")
+trendline = slope * df['no2'] + intercept
+plt.plot(df['no2'], trendline, color='red', linestyle='--', label=f"Trendline")
 
 # Compute confidence intervals (95% confidence)
-x_vals = df['station']
+x_vals = df['no2']
 y_vals = trendline
 
-# Standard error and confidence interval calculation
-y_err = std_err * 1.96  # 95% confidence interval (1.96 * std_err)
-y_upper = y_vals + y_err
-y_lower = y_vals - y_err
-
-# Add shaded confidence interval
-plt.fill_between(df['station'], y_lower, y_upper, color='red', alpha=0.2, label="95% Confidence Interval")
-
 # Annotate statistical information
-stats_text = f"R = {r_value:.2f}\nP-value = {p_value:.2e}\nStd Err = {std_err:.2f}"
-plt.annotate(stats_text, xy=(0.8, 0.75), xycoords='axes fraction', fontsize=12, bbox=dict(boxstyle="round,pad=0.3", edgecolor='black', facecolor='white'))
+stats_text = f"R = {r_value:.2f}\nR² = {r_value**2:.2f}\nP-value = {p_value:.2e}\nStd Err = {std_err:.2f}"
+plt.annotate(stats_text, xy=(0.03, 0.85), xycoords='axes fraction', fontsize=12, bbox=dict(boxstyle="round,pad=0.3", edgecolor='black', facecolor='white'))
 
 # Labels and title
-plt.xlabel('NO$_2$ surface concentration  (ug·m$^{-3}$)')
-plt.ylabel('NO$_2$ total VCDs (moles·m$^{-2}$)')
+plt.xlabel('pandora NO$_2$ VCD (moles·m$^{-2}$)')
+plt.ylabel('pandora SO$_2$ VCD (moles·m$^{-2}$)')
 
 # Add legend
 plt.legend()
 
-# Show plot
+# Show the plot
 plt.tight_layout()
 plt.show()
